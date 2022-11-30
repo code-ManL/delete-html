@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { getDomNode } from './main';
+import { getDeleteHTMLNode } from './handlers';
 
 
 export function activate(context: vscode.ExtensionContext) {
@@ -16,10 +16,10 @@ export function activate(context: vscode.ExtensionContext) {
   const code = editor.document.getText();
 
   // 获取光标具体位置
-  const line = editor.selection.active.line;
+  const line = editor.selection.active.line + 1;
 
   // 获取html标签的具体位置
-  const domNode = getDomNode(code, line + 1);
+  const domNode = getDeleteHTMLNode(code, line);
 
   if (!domNode) {
     return;

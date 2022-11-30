@@ -1,7 +1,5 @@
 import traverse from '@babel/traverse';
-import { parse as babelParse } from "@babel/parser";
-import { ParserOptions } from "@babel/parser";
-
+import parse from '../parse';
 
 interface NodeType {
   name: string,
@@ -17,48 +15,8 @@ interface NodeType {
   }
 }
 
-const BABEL_PARSER_OPTIONS: ParserOptions = {
-  sourceType: "module",
-  allowImportExportEverywhere: true,
-  allowReturnOutsideFunction: true,
-  startLine: 1,
-  tokens: true,
-  plugins: [
-    "asyncGenerators",
-    "bigInt",
-    "classPrivateMethods",
-    "classPrivateProperties",
-    "classProperties",
-    "decorators-legacy",
-    "doExpressions",
-    "dynamicImport",
-    "exportDefaultFrom",
-    "exportNamespaceFrom",
-    "functionBind",
-    "functionSent",
-    "importMeta",
-    "jsx",
-    "logicalAssignment",
-    "nullishCoalescingOperator",
-    "numericSeparator",
-    "objectRestSpread",
-    "optionalCatchBinding",
-    "optionalChaining",
-    "partialApplication",
-    ["pipelineOperator", { proposal: "minimal" }],
-    "placeholders",
-    "throwExpressions",
-    "topLevelAwait",
-    "typescript",
-  ],
-};
 
-function parse(code: string) {
-  const ast = babelParse(code, BABEL_PARSER_OPTIONS);
-  return ast;
-}
-
-export function getDomNode(code: string, index: any): NodeType | undefined {
+export function getDeleteHTMLNode(code: string, index: any): NodeType | undefined {
   let domNode;
 
   const ast = parse(code);
@@ -94,7 +52,6 @@ export function getDomNode(code: string, index: any): NodeType | undefined {
         return (variableExpressionPath.node as any).closingElement.loc.end;
       }
 
-
       if (variableExpressionPath?.isExpression()) {
         console.log(variableExpressionPath.node);
 
@@ -107,10 +64,8 @@ export function getDomNode(code: string, index: any): NodeType | undefined {
           };
         }
       }
-
     }
   });
-
   return domNode;
 }
 
